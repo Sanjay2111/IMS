@@ -1,10 +1,12 @@
-import { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState(null);
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -27,6 +29,7 @@ const LoginPage = () => {
 
       if (matchedUser) {
         setLoginStatus("Success");
+        navigate("/home"); // Navigate to the Home page
       } else {
         setLoginStatus("Failure");
       }

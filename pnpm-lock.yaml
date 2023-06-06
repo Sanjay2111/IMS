@@ -19,6 +19,9 @@ dependencies:
   react-redux:
     specifier: ^8.0.7
     version: 8.0.7(@reduxjs/toolkit@1.9.5)(@types/react-dom@18.0.11)(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
+  react-router:
+    specifier: ^6.11.2
+    version: 6.11.2(react@18.2.0)
   react-router-dom:
     specifier: ^6.11.2
     version: 6.11.2(react-dom@18.2.0)(react@18.2.0)
