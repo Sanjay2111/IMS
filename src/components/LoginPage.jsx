@@ -1,8 +1,8 @@
-import  { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ setLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState(null);
@@ -29,6 +29,7 @@ const LoginPage = () => {
 
       if (matchedUser) {
         setLoginStatus("Success");
+        setLoggedIn(true); // Set loggedIn to true
         navigate("/home"); // Navigate to the Home page
       } else {
         setLoginStatus("Failure");

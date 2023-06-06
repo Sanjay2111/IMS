@@ -51,6 +51,9 @@ devDependencies:
   eslint-plugin-react-refresh:
     specifier: ^0.3.4
     version: 0.3.4(eslint@8.38.0)
+  pnpm:
+    specifier: '3'
+    version: 3.8.1
   vite:
     specifier: ^4.3.9
     version: 4.3.9
@@ -1786,6 +1789,12 @@ packages:
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+    dev: true
+
+  /pnpm@3.8.1:
+    resolution: {integrity: sha512-uINy/U+TNvUHInG1l0/NrgDosUtafn9BrHjP5+v+ojpw+zb/lgXjkQmMHB4461LKezlNoBb7+0JOrNnm5JhZFg==}
+    engines: {node: '>=8.15'}
+    hasBin: true
     dev: true
 
   /postcss@8.4.24:
