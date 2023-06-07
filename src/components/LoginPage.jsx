@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./animate.css";
@@ -9,6 +9,7 @@ const LoginPage = ({ setSessionID }) => {
   const [password, setPassword] = useState("");
   const [loginStatusMessage, setLoginStatusMessage] = useState("");
   const [loginStatus, setLoginStatus] = useState(false);
+  const [passwordAnimation] = "";
 
   const navigate = useNavigate();
 
@@ -88,7 +89,7 @@ const LoginPage = ({ setSessionID }) => {
                   id="form2Example2"
                   className={`form-control ${
                     loginStatus === false ? "is-invalid" : ""
-                  }`}
+                  } ${passwordAnimation}`}
                   value={password}
                   onChange={handlePasswordChange}
                 />

@@ -4,11 +4,8 @@ const Navbar = ({ setSessionID }) => {
   const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLogout = () => {
-    // Implement your logout logic here
-    // Clear user session, update login status, etc.
-
-    setSessionID(""); // Reset or remove the session ID
-    navigate("/"); // Navigate to the login page
+    setSessionID(""); 
+    navigate("/"); 
   };
 
   return (

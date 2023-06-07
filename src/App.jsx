@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,7 +14,6 @@ import About from "./components/About";
 const App = () => {
   const [sessionID, setSessionID] = useState("");
 
-  // Check for session ID in localStorage on initial load
   useEffect(() => {
     const storedSessionID = localStorage.getItem("sessionID");
     if (storedSessionID) {
@@ -22,7 +21,6 @@ const App = () => {
     }
   }, []);
 
-  // Update localStorage when session ID changes
   useEffect(() => {
     if (sessionID) {
       localStorage.setItem("sessionID", sessionID);
@@ -33,7 +31,7 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar setSessionID={setSessionID} />
+      {sessionID && <Navbar setSessionID={setSessionID} />}
       <Routes>
         <Route
           path="/"
