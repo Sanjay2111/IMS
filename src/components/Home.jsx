@@ -1,8 +1,10 @@
-const Home = () => {
+// components/Home.js
+import React from "react";
+
+const Home = ({ token }) => {
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>This is the home page of your application.</p>
+      <h1>Home Page</h1>
     </div>
   );
 };

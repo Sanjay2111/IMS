@@ -1,9 +1,13 @@
-function Contact() {
+// components/Contact.js
+import React from "react";
+
+const Contact = ({ token }) => {
   return (
     <div>
-      <h1>Hello</h1>
+      <h1>Contact Page</h1>
+      
     </div>
   );
-}
+};
 
 export default Contact;

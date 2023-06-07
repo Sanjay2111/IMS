@@ -1,8 +1,9 @@
-import { useState } from "react";
+// components/LoginPage.js
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = ({ setLoggedIn }) => {
+const LoginPage = ({ setLoggedIn, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState(null);
@@ -20,16 +21,17 @@ const LoginPage = ({ setLoggedIn }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.get("http://localhost:8080/users");
-      const users = response.data;
+      const response = await axios.post("http://localhost:8080/login", {
+        username,
+        password,
+      });
 
-      const matchedUser = users.find(
-        (user) => user.username === username && user.password === password
-      );
+      const token = response.data; // Extract the token from the response
 
-      if (matchedUser) {
+      if (token) {
         setLoginStatus("Success");
         setLoggedIn(true); // Set loggedIn to true
+        setToken(token); // Set the token state
         navigate("/home"); // Navigate to the Home page
       } else {
         setLoginStatus("Failure");
@@ -37,6 +39,23 @@ const LoginPage = ({ setLoggedIn }) => {
     } catch (error) {
       console.error("Error:", error);
       setLoginStatus("Failure");
+    }
+  };
+
+  const handleGetUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/users", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the Authorization header with the token
+        },
+      });
+
+      const users = response.data; // Extract the users from the response
+
+      // Process the list of users as needed
+      console.log(users);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
