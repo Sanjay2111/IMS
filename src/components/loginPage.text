@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./animate.css"; // Import the Animate.css file
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import "./animate.css";
 import "./item.css";
 
-const LoginPage = ({ setLoggedIn, setToken }) => {
+const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
-  const [loginStatus, setLoginStatus] = useState(null);
+  const [loginStatus, setLoginStatus] = useState("");
   const [passwordAnimation, setPasswordAnimation] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -18,35 +17,20 @@ const LoginPage = ({ setLoggedIn, setToken }) => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
-    setPasswordAnimation("");
-  };
-
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.get("http://localhost:8080/users", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the Authorization header with the token
-        },
+      const response = await axios.post("http://localhost:8080/login", {
+        username: username,
+        password: password,
       });
 
-      const users = response.data; // Extract the users from the response
-
-      // Find the user with the matching username and password
-      const matchedUser = users.find(
-        (user) => user.username === username && user.password === password
-      );
-
-      if (matchedUser) {
+      if (response.data.startsWith("Login successful")) {
         setLoginStatus("Success");
-        setLoggedIn(true);
-        setToken(token);
-        navigate("/home");
+        navigate("/home"); // Navigate to "/home" on successful login
       } else {
         setLoginStatus("Failure");
       }
@@ -70,7 +54,8 @@ const LoginPage = ({ setLoggedIn, setToken }) => {
               style={{
                 width: "30%",
                 height: "50%",
-                border: "2px solid BLUE",
+                // backgroundColor: "#87CEEB",
+                border: "2px solid BLUE", // Add the border style
               }}
               onSubmit={handleSubmit}
             >
@@ -94,12 +79,12 @@ const LoginPage = ({ setLoggedIn, setToken }) => {
                   type="password"
                   id="form2Example2"
                   className={`form-control ${
-                    loginStatus === "error" ? "is-invalid" : ""
+                    loginStatus === "Failure" ? "is-invalid" : ""
                   } ${passwordAnimation}`}
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {loginStatus === "error" && (
+                {loginStatus === "Failure" && (
                   <div className="invalid-feedback">
                     Incorrect username or password
                   </div>
@@ -117,8 +102,6 @@ const LoginPage = ({ setLoggedIn, setToken }) => {
                       type="checkbox"
                       value=""
                       id="form2Example31"
-                      checked={rememberMe}
-                      onChange={handleRememberMeChange}
                     />
                     <label
                       className="form-check-label"

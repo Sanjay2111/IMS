@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useNavigate } from "react-router-dom";
 import "./animate.css";
 import "./item.css";
 
-const LoginPage = () => {
+const LoginPage = ({ setSessionID }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
-  const [passwordAnimation, setPasswordAnimation] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [loginStatusMessage, setLoginStatusMessage] = useState("");
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -28,15 +29,23 @@ const LoginPage = () => {
         password: password,
       });
 
-      if (response.data.startsWith("Login successful")) {
-        setLoginStatus("Success");
-        navigate("/home"); // Navigate to "/home" on successful login
+      if (response.status === 200) {
+        const sessionID = response.data.split("Session ID: ")[1];
+
+        console.log("Login successful. Session ID:", sessionID);
+
+        setLoginStatus(true);
+        setLoginStatusMessage("");
+        setSessionID(sessionID);
+        navigate("/home");
       } else {
-        setLoginStatus("Failure");
+        setLoginStatus(false);
+        setLoginStatusMessage("Incorrect username or password");
       }
     } catch (error) {
       console.error("Error:", error);
-      setLoginStatus("Failure");
+      setLoginStatus(false);
+      setLoginStatusMessage("An error occurred");
     }
   };
 
@@ -54,8 +63,7 @@ const LoginPage = () => {
               style={{
                 width: "30%",
                 height: "50%",
-                // backgroundColor: "#87CEEB",
-                border: "2px solid BLUE", // Add the border style
+                border: "2px solid BLUE",
               }}
               onSubmit={handleSubmit}
             >
@@ -79,15 +87,13 @@ const LoginPage = () => {
                   type="password"
                   id="form2Example2"
                   className={`form-control ${
-                    loginStatus === "Failure" ? "is-invalid" : ""
-                  } ${passwordAnimation}`}
+                    loginStatus === false ? "is-invalid" : ""
+                  }`}
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {loginStatus === "Failure" && (
-                  <div className="invalid-feedback">
-                    Incorrect username or password
-                  </div>
+                {loginStatus === false && (
+                  <div className="invalid-feedback">{loginStatusMessage}</div>
                 )}
                 <label className="form-label" htmlFor="form2Example2">
                   Password

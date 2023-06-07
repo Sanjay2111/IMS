@@ -1,13 +1,9 @@
-// components/Contact.js
-import React from "react";
+
 import "./item.css";
-
-const Contact = ({ token }) => {
+function Contact() {
   return (
-    <div className="image">
-      <h1>Contact Page</h1>
-    </div>
-  );
-};
+    <div>Contact</div>
+  )
+}
 
-export default Contact;
+export default Contact
