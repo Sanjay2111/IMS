@@ -8,16 +8,26 @@ import {
 import LoginPage from "./components/LoginPage";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
-import Contact from "./components/Contact";
-import About from "./components/About";
+
+import Dashboard from "./components/Dashboard";
+import ItemTable from "./components/ItemTable";
+import ItemForm from "./components/ItemForm";
 
 const App = () => {
   const [sessionID, setSessionID] = useState("");
+  const [currentRoute, setCurrentRoute] = useState("");
+  const [shouldUpdateItems, setShouldUpdateItems] = useState(false);
 
   useEffect(() => {
     const storedSessionID = localStorage.getItem("sessionID");
+    const storedRoute = localStorage.getItem("currentRoute");
+
     if (storedSessionID) {
       setSessionID(storedSessionID);
+    }
+
+    if (storedRoute) {
+      setCurrentRoute(storedRoute);
     }
   }, []);
 
@@ -29,6 +39,20 @@ const App = () => {
     }
   }, [sessionID]);
 
+  useEffect(() => {
+    if (currentRoute) {
+      localStorage.setItem("currentRoute", currentRoute);
+    } else {
+      localStorage.removeItem("currentRoute");
+    }
+  }, [currentRoute]);
+  const handleShouldUpdateItems = (value) => {
+    setShouldUpdateItems(value);
+  };
+  const handleItemAdded = () => {
+    setShouldUpdateItems(true);
+  };
+
   return (
     <Router>
       {sessionID && <Navbar setSessionID={setSessionID} />}
@@ -37,23 +61,24 @@ const App = () => {
           path="/"
           element={
             sessionID ? (
-              <Navigate to="/home" />
+              <Navigate to={currentRoute || "/dashboard"} replace />
             ) : (
               <LoginPage setSessionID={setSessionID} />
             )
           }
         />
         <Route
-          path="/home"
-          element={sessionID ? <Home /> : <Navigate to="/" />}
+          path="/dashboard"
+          element={sessionID ? <Dashboard /> : <Navigate to="/" replace />}
         />
         <Route
-          path="/contact"
-          element={sessionID ? <Contact /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/about"
-          element={sessionID ? <About /> : <Navigate to="/" />}
+          path="/inventory"
+          element={
+            <ItemForm
+              onItemAdded={handleItemAdded}
+              setShouldUpdateItems={handleShouldUpdateItems}
+            />
+          }
         />
       </Routes>
     </Router>

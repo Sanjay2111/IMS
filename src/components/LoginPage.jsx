@@ -38,7 +38,7 @@ const LoginPage = ({ setSessionID }) => {
         setLoginStatus(true);
         setLoginStatusMessage("");
         setSessionID(sessionID);
-        navigate("/home");
+        navigate("/dashboard");
       } else {
         setLoginStatus(false);
         setLoginStatusMessage("Incorrect username or password");
