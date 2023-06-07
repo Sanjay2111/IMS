@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
-import "./animate.css";
+import { useNavigate } from "react-router-dom";
+import "./animate.css"; // Import the Animate.css file
 import "./item.css";
 
-const LoginPage = () => {
+const LoginPage = ({ setLoggedIn, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginStatus, setLoginStatus] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
+  const [loginStatus, setLoginStatus] = useState(null);
   const [passwordAnimation, setPasswordAnimation] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -17,20 +18,35 @@ const LoginPage = () => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+    setPasswordAnimation("");
+  };
+
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        username: username,
-        password: password,
+      const response = await axios.get("http://localhost:8080/users", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the Authorization header with the token
+        },
       });
 
-      if (response.data.startsWith("Login successful")) {
+      const users = response.data; // Extract the users from the response
+
+      // Find the user with the matching username and password
+      const matchedUser = users.find(
+        (user) => user.username === username && user.password === password
+      );
+
+      if (matchedUser) {
         setLoginStatus("Success");
-        navigate("/home"); // Navigate to "/home" on successful login
+        setLoggedIn(true);
+        setToken(token);
+        navigate("/home");
       } else {
         setLoginStatus("Failure");
       }
@@ -54,8 +70,7 @@ const LoginPage = () => {
               style={{
                 width: "30%",
                 height: "50%",
-                // backgroundColor: "#87CEEB",
-                border: "2px solid BLUE", // Add the border style
+                border: "2px solid BLUE",
               }}
               onSubmit={handleSubmit}
             >
@@ -79,12 +94,12 @@ const LoginPage = () => {
                   type="password"
                   id="form2Example2"
                   className={`form-control ${
-                    loginStatus === "Failure" ? "is-invalid" : ""
+                    loginStatus === "error" ? "is-invalid" : ""
                   } ${passwordAnimation}`}
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {loginStatus === "Failure" && (
+                {loginStatus === "error" && (
                   <div className="invalid-feedback">
                     Incorrect username or password
                   </div>
@@ -102,6 +117,8 @@ const LoginPage = () => {
                       type="checkbox"
                       value=""
                       id="form2Example31"
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
                     />
                     <label
                       className="form-check-label"

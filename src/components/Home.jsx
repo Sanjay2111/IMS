@@ -1,9 +1,10 @@
 // components/Home.js
 import React from "react";
+import "./item.css";
 
 const Home = ({ token }) => {
   return (
-    <div>
+    <div className="image">
       <h1>Home Page</h1>
     </div>
   );
