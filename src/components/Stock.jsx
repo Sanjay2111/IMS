@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import "./item.css";
+import "../styles/item.css";
 
 function Stock({ setShouldUpdateItems, setAlertCount }) {
   const [items, setItems] = useState([]);

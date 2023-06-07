@@ -1,4 +1,4 @@
-import "./item.css";
+import "../styles/item.css";
 
 function Dashboard() {
   return (

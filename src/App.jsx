@@ -8,8 +8,8 @@ import {
 import LoginPage from "./components/LoginPage";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
-import ItemForm from "./components/ItemForm";
 import Stock from "./components/Stock";
+import ItemTable from "./components/ItemTable";
 
 const App = () => {
   const [sessionID, setSessionID] = useState("");
@@ -77,10 +77,10 @@ const App = () => {
         <Route
           path="/inventory"
           element={
-            <ItemForm
-              onItemAdded={handleItemAdded}
-              setShouldUpdateItems={handleShouldUpdateItems}
-            />
+            <ItemTable />
+            //   onItemAdded={handleItemAdded}
+            //   setShouldUpdateItems={handleShouldUpdateItems}
+            // />
           }
         />
         <Route
@@ -89,7 +89,7 @@ const App = () => {
             <Stock
               shouldUpdateItems={shouldUpdateItems}
               setShouldUpdateItems={handleShouldUpdateItems}
-              setAlertCount={setAlertCount} // Pass the setAlertCount function as prop
+              setAlertCount={setAlertCount}
             />
           }
         />
