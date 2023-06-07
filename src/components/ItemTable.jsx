@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-import axiosBase from "../axiosBase";
+import axios from "axios";
 
 function ItemTable() {
   const [items, setItems] = useState([]);
@@ -25,7 +24,7 @@ function ItemTable() {
 
   const fetchItems = async () => {
     try {
-      const response = await axiosBase.get("/items");
+      const response = await axios.get("http://localhost:8080/items");
       setItems(response.data);
     } catch (error) {
       console.log(error);
@@ -34,7 +33,7 @@ function ItemTable() {
 
   const handleDeleteItem = async (itemId) => {
     try {
-      await axiosBase.delete(`/items/${itemId}`);
+      await axios.delete(`http://localhost:8080/items/${itemId}`);
       fetchItems(); // Refresh the item list after deletion
     } catch (error) {
       console.log(error);
@@ -57,8 +56,8 @@ function ItemTable() {
 
   const saveEditItem = async () => {
     try {
-      const response = await axiosBase.put(
-        `/items/${editItemId}`,
+      const response = await axios.put(
+        `http://localhost:8080/items/${editItemId}`,
         editItemData
       );
       console.log("Item updated:", response.data);
@@ -128,8 +127,8 @@ function ItemTable() {
 
   const dispatchItem = async () => {
     try {
-      const response = await axiosBase.put(
-        `/items/${dispatchItemId}/dispatch`,
+      const response = await axios.put(
+        `http://localhost:8080/items/${dispatchItemId}/dispatch`,
         { dispatchQuantity }
       );
       console.log("Item dispatched:", response.data);
