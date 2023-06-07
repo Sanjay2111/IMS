@@ -86,10 +86,10 @@ function Navbar({ alertCount, setSessionID }) {
                   onClick={() => handleClick("stock")}
                 >
                   Stock Alerts
+                  {alertCount > 0 && (
+                    <span className="badge badge-dark ml-2">{alertCount}</span>
+                  )}
                 </Link>
-                {alertCount > 0 && (
-                  <span className="badge badge-dark ml-2">{alertCount}</span>
-                )}
               </div>
             </li>
 

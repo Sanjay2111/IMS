@@ -6,17 +6,18 @@ import {
   Navigate,
 } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import Home from "./components/Home";
-import Navbar from "./components/Navbar";
 
+import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
-import ItemTable from "./components/ItemTable";
+
 import ItemForm from "./components/ItemForm";
+import Stock from "./components/Stock";
 
 const App = () => {
   const [sessionID, setSessionID] = useState("");
   const [currentRoute, setCurrentRoute] = useState("");
   const [shouldUpdateItems, setShouldUpdateItems] = useState(false);
+  const [alertCount, setAlertCount] = useState(0); // New state variable for notification count
 
   useEffect(() => {
     const storedSessionID = localStorage.getItem("sessionID");
@@ -46,16 +47,23 @@ const App = () => {
       localStorage.removeItem("currentRoute");
     }
   }, [currentRoute]);
+
   const handleShouldUpdateItems = (value) => {
     setShouldUpdateItems(value);
+    setAlertCount((prevCount) => prevCount + 1); // Increment the alert count
   };
+
   const handleItemAdded = () => {
     setShouldUpdateItems(true);
+    setAlertCount((prevCount) => prevCount + 1); // Increment the alert count
   };
 
   return (
     <Router>
-      {sessionID && <Navbar setSessionID={setSessionID} />}
+      {sessionID && (
+        <Navbar setSessionID={setSessionID} alertCount={alertCount} />
+      )}{" "}
+      {/* Pass alertCount to Navbar */}
       <Routes>
         <Route
           path="/"
@@ -77,6 +85,16 @@ const App = () => {
             <ItemForm
               onItemAdded={handleItemAdded}
               setShouldUpdateItems={handleShouldUpdateItems}
+            />
+          }
+        />
+        <Route
+          path="/stock"
+          element={
+            <Stock
+              shouldUpdateItems={shouldUpdateItems}
+              setShouldUpdateItems={handleShouldUpdateItems}
+              setAlertCount={setAlertCount} // Pass setAlertCount to Stock
             />
           }
         />
