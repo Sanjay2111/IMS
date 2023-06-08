@@ -168,26 +168,28 @@ function ItemTable() {
 
   return (
     <>
-      <AddItemForm fetchItems={fetchItems} />
-      <div>
-        <ItemList
-          items={sortedItems}
-          editItemId={editItemId}
-          editItemData={editItemData}
-          dispatchItemId={dispatchItemId}
-          dispatchQuantity={dispatchQuantity}
-          sortColumn={sortColumn}
-          getSortIndicator={getSortIndicator}
-          handleDeleteItem={handleDeleteItem}
-          handleEditItem={handleEditItem}
-          handleEditItemChange={handleEditItemChange}
-          saveEditItem={saveEditItem}
-          cancelEditItem={cancelEditItem}
-          handleSortColumn={handleSortColumn}
-          handleDispatchItem={handleDispatchItem}
-          handleDispatchQuantityChange={handleDispatchQuantityChange}
-          dispatchItem={dispatchItem}
-        />
+      <div className="">
+        <AddItemForm fetchItems={fetchItems} />
+        <div>
+          <ItemList
+            items={sortedItems}
+            editItemId={editItemId}
+            editItemData={editItemData}
+            dispatchItemId={dispatchItemId}
+            dispatchQuantity={dispatchQuantity}
+            sortColumn={sortColumn}
+            getSortIndicator={getSortIndicator}
+            handleDeleteItem={handleDeleteItem}
+            handleEditItem={handleEditItem}
+            handleEditItemChange={handleEditItemChange}
+            saveEditItem={saveEditItem}
+            cancelEditItem={cancelEditItem}
+            handleSortColumn={handleSortColumn}
+            handleDispatchItem={handleDispatchItem}
+            handleDispatchQuantityChange={handleDispatchQuantityChange}
+            dispatchItem={dispatchItem}
+          />
+        </div>
       </div>
     </>
   );

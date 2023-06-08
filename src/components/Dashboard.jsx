@@ -10,7 +10,7 @@ import {
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import "../styles/card.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Dashboard() {
   const [items, setItems] = useState([]);
@@ -125,7 +125,7 @@ function Dashboard() {
   return (
     <>
       <h3>Sales per Type</h3>
-      <table className="table">
+      <table className="table table-striped">
         <thead></thead>
         <tfoot>
           <tr>
@@ -137,19 +137,19 @@ function Dashboard() {
         </tfoot>
       </table>
 
-      <button onClick={handleButtonClick}>
+      <button className="btn btn-primary" onClick={handleButtonClick}>
         {showChart ? "Disable sales chart" : "Generate sales chart per type"}
       </button>
 
-      <button onClick={handleDispatchChartClick}>
+      <button className="btn btn-primary" onClick={handleDispatchChartClick}>
         {showDispatchChart ? "Disable dispatch chart" : "Dispatch chart"}
       </button>
 
-      <button onClick={handleSalesReportClick}>
+      <button className="btn btn-primary" onClick={handleSalesReportClick}>
         {showSalesReport ? "Disable sales report" : "Generate sales report"}
       </button>
 
-      <button onClick={handleSalesPerTypeClick}>
+      <button className="btn btn-primary" onClick={handleSalesPerTypeClick}>
         {showSalesPerType
           ? "Disable sales per Type"
           : "Generate sales per Type"}
@@ -168,7 +168,7 @@ function Dashboard() {
       )}
 
       {showSalesReport && (
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Name</th>
@@ -189,7 +189,7 @@ function Dashboard() {
       )}
 
       {showSalesPerType && (
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Type</th>
