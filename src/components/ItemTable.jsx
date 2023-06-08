@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AddItemForm from "./AddItemForm";
+import DispatchForm from "./DispatchForm";
 
 function ItemTable() {
   const [items, setItems] = useState([]);
@@ -246,7 +247,6 @@ function ItemTable() {
                 />
               </div>
               <div>
-                <h2>Dispatch Table</h2>
                 <label>Name:</label>
                 <input
                   type="text"
@@ -282,59 +282,48 @@ function ItemTable() {
                   onChange={handleEditItemChange}
                 />
               </div>
+              <div>
+                <button type="button" onClick={saveEditItem}>
+                  Save
+                </button>
+                <button type="button" onClick={cancelEditItem}>
+                  Cancel
+                </button>
+              </div>
             </form>
-            <button type="button" onClick={saveEditItem}>
-              Save
-            </button>
-            <button type="button" onClick={cancelEditItem}>
-              Cancel
-            </button>
           </div>
         )}
 
         {dispatchItemId && (
-          <div className="dispatch-item-form">
-            <h3>Dispatch Item</h3>
-            <form>
-              <div>
-                <label>Dispatch Quantity:</label>
-                <input
-                  type="text"
-                  name="dispatchQuantity"
-                  value={dispatchQuantity}
-                  onChange={handleDispatchQuantityChange}
-                />
-              </div>
-            </form>
-            <button type="button" onClick={dispatchItem}>
-              Dispatch
-            </button>
-          </div>
+          <DispatchForm
+            quantity={dispatchQuantity}
+            onQuantityChange={handleDispatchQuantityChange}
+            onDispatch={dispatchItem}
+          />
         )}
-
-        <table className="table additional-table">
-          <thead>
-            <tr className="bg-dark">
-              <th className="bg-dark text-light">ID</th>
-              <th className="bg-dark text-light">Name</th>
-              <th className="bg-dark text-light">Order Number</th>
-              <th className="bg-dark text-light">Dispatch Quantity</th>
-              <th className="bg-dark text-light">Sale Generated</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedItems.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.orderNumber}</td>
-                <td>{item.dispatchQuantity}</td>
-                <td>{item.saleGenerated}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
+      <table className="table additional-table">
+        <thead>
+          <tr className="bg-dark">
+            <th className="bg-dark text-light">ID</th>
+            <th className="bg-dark text-light">Name</th>
+            <th className="bg-dark text-light">Order Number</th>
+            <th className="bg-dark text-light">Dispatch Quantity</th>
+            <th className="bg-dark text-light">Sale Generated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedItems.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.orderNumber}</td>
+              <td>{item.dispatchQuantity}</td>
+              <td>{item.saleGenerated}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }
