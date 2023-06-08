@@ -1,6 +1,6 @@
+// Navbar.jsx
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function Navbar({ alertCount, setSessionID }) {
   const [activeLink, setActiveLink] = useState("");

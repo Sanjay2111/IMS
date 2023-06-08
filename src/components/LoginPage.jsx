@@ -65,6 +65,7 @@ const LoginPage = ({ setSessionID }) => {
                 width: "30%",
                 height: "50%",
                 border: "2px solid BLUE",
+                backgroundColor: "rgb(255, 255, 255, 0.8)",
               }}
               onSubmit={handleSubmit}
             >
