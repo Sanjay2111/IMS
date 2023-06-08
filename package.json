@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    
-
-  "prebuild": "[[ $CI = true ]] && npx pnpm@3 install -r --store=node_modules/.pnpm-store || echo skiping pnpm install",
+    "prebuild": "[[ $CI = true ]] && npx pnpm@3 install -r --store=node_modules/.pnpm-store || echo skiping pnpm install",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
@@ -16,7 +14,9 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "bootstrap": "5.3.0",
+    "chart.js": "^4.3.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",
     "react-router": "^6.11.2",

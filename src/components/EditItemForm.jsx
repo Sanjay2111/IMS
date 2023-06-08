@@ -5,10 +5,9 @@ function EditItemForm(props) {
     props;
 
   return (
-    <div className="edit-item-form">
-      <h3>Edit Item</h3>
+    <>
       <form>
-        {/* <div>
+        <div>
           <label>ID:</label>
           <input
             type="text"
@@ -16,7 +15,7 @@ function EditItemForm(props) {
             value={editItemData.id}
             onChange={handleEditItemChange}
           />
-        </div> */}
+        </div>
         <div>
           <label>Name:</label>
           <input
@@ -36,14 +35,19 @@ function EditItemForm(props) {
           />
         </div>
         <div>
-          <label>Type:</label>
-          <input
-            type="text"
+          <label htmlFor="type">Type:</label>
+          <select
             name="type"
             value={editItemData.type}
             onChange={handleEditItemChange}
-          />
+          >
+            <option value="">Select Type</option>
+            <option value="Bag">Bag</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Clothes">Clothes</option>
+          </select>
         </div>
+
         <div>
           <label>Quantity:</label>
           <input
@@ -62,7 +66,7 @@ function EditItemForm(props) {
           </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }
 

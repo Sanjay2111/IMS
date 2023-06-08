@@ -3,11 +3,8 @@ import axios from "axios";
 
 function AddItemForm({ fetchItems }) {
   const [newItem, setNewItem] = useState({
-    id: "",
     name: "",
-    price: "",
-    type: "",
-    quantity: "",
+    salesPriceGenerated: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -165,18 +162,23 @@ function AddItemForm({ fetchItems }) {
                     <label htmlFor="type" className="form-label">
                       Type:
                     </label>
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
                       id="type"
                       name="type"
                       value={newItem.type}
                       onChange={handleNewItemChange}
-                    />
+                    >
+                      <option value="">Select Type</option>
+                      <option value="Bag">Bag</option>
+                      <option value="Shoes">Shoes</option>
+                      <option value="Clothes">Clothes</option>
+                    </select>
                     {errors.type && (
                       <div className="text-danger">{errors.type}</div>
                     )}
                   </div>
+
                   <div className="mb-3">
                     <label htmlFor="quantity" className="form-label">
                       Quantity:
