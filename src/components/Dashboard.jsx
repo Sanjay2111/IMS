@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Chart,
@@ -78,32 +78,35 @@ function Dashboard() {
     maintainAspectRatio: false,
   };
 
-  const handleButtonClick = () => {
-    setShowChart((prevShowChart) => !prevShowChart);
-    setShowDispatchChart(false);
-    setShowSalesReport(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleDispatchChartClick = () => {
-    setShowDispatchChart((prevShowDispatchChart) => !prevShowDispatchChart);
-    setShowChart(false);
-    setShowSalesReport(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleSalesReportClick = () => {
-    setShowSalesReport((prevShowSalesReport) => !prevShowSalesReport);
-    setShowChart(false);
-    setShowDispatchChart(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleSalesPerTypeClick = () => {
-    setShowSalesPerType((prevShowSalesPerType) => !prevShowSalesPerType);
-    setShowChart(false);
-    setShowDispatchChart(false);
-    setShowSalesReport(false);
+  const handleCardClick = (cardName) => {
+    switch (cardName) {
+      case "chart":
+        setShowChart((prevShowChart) => !prevShowChart);
+        setShowDispatchChart(false);
+        setShowSalesReport(false);
+        setShowSalesPerType(false);
+        break;
+      case "dispatchChart":
+        setShowDispatchChart((prevShowDispatchChart) => !prevShowDispatchChart);
+        setShowChart(false);
+        setShowSalesReport(false);
+        setShowSalesPerType(false);
+        break;
+      case "salesReport":
+        setShowSalesReport((prevShowSalesReport) => !prevShowSalesReport);
+        setShowChart(false);
+        setShowDispatchChart(false);
+        setShowSalesPerType(false);
+        break;
+      case "salesPerType":
+        setShowSalesPerType((prevShowSalesPerType) => !prevShowSalesPerType);
+        setShowChart(false);
+        setShowDispatchChart(false);
+        setShowSalesReport(false);
+        break;
+      default:
+        break;
+    }
   };
 
   const getDispatchChartData = () => {
@@ -137,23 +140,71 @@ function Dashboard() {
         </tfoot>
       </table>
 
-      <button className="btn btn-primary" onClick={handleButtonClick}>
-        {showChart ? "Disable sales chart" : "Generate sales chart per type"}
-      </button>
+      <div className="row">
+        <div className="col-md-3">
+          <div
+            className={`card ${showChart ? "border-danger" : ""}`}
+            onClick={() => handleCardClick("chart")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales Chart per Type</h5>
+              <p className="card-text">
+                {showChart
+                  ? "Click to disable sales chart"
+                  : "Click to generate sales chart per type"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <button className="btn btn-primary" onClick={handleDispatchChartClick}>
-        {showDispatchChart ? "Disable dispatch chart" : "Dispatch chart"}
-      </button>
+        <div className="col-md-3">
+          <div
+            className={`card ${showDispatchChart ? "border-danger" : ""}`}
+            onClick={() => handleCardClick("dispatchChart")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Dispatch Chart</h5>
+              <p className="card-text">
+                {showDispatchChart
+                  ? "Click to disable dispatch chart"
+                  : "Click to generate dispatch chart"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <button className="btn btn-primary" onClick={handleSalesReportClick}>
-        {showSalesReport ? "Disable sales report" : "Generate sales report"}
-      </button>
+        <div className="col-md-3">
+          <div
+            className={`card ${showSalesReport ? "border-danger" : ""}`}
+            onClick={() => handleCardClick("salesReport")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales Report</h5>
+              <p className="card-text">
+                {showSalesReport
+                  ? "Click to disable sales report"
+                  : "Click to generate sales report"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <button className="btn btn-primary" onClick={handleSalesPerTypeClick}>
-        {showSalesPerType
-          ? "Disable sales per Type"
-          : "Generate sales per Type"}
-      </button>
+        <div className="col-md-3">
+          <div
+            className={`card ${showSalesPerType ? "border-danger" : ""}`}
+            onClick={() => handleCardClick("salesPerType")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales per Type</h5>
+              <p className="card-text">
+                {showSalesPerType
+                  ? "Click to disable sales per type"
+                  : "Click to generate sales per type"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {showChart && (
         <div style={{ width: "600px", height: "600px" }}>

@@ -13,8 +13,6 @@ function ItemTable() {
     type: "",
     quantity: "",
   });
-  const [dispatchItemId, setDispatchItemId] = useState(null);
-  const [dispatchQuantity, setDispatchQuantity] = useState("");
   const [sortColumn, setSortColumn] = useState({
     column: null,
     order: "normal",
@@ -30,24 +28,6 @@ function ItemTable() {
       setItems(response.data);
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const dispatchItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${dispatchItemId}/dispatch`,
-        { dispatchQuantity }
-      );
-      console.log("Item dispatched:", response.data);
-      setDispatchItemId(null);
-      setDispatchQuantity("");
-      fetchItems(); // Refresh the item list after dispatch
-    } catch (error) {
-      console.log("Dispatch error:", error);
-      console.log("Response data:", error.response.data);
-      console.log("Response status:", error.response.status);
-      console.log("Response headers:", error.response.headers);
     }
   };
 
@@ -136,15 +116,6 @@ function ItemTable() {
     return null;
   };
 
-  const handleDispatchItem = (itemId) => {
-    setDispatchItemId(itemId);
-    setDispatchQuantity("");
-  };
-
-  const handleDispatchQuantityChange = (e) => {
-    setDispatchQuantity(e.target.value);
-  };
-
   const sortedItems = items.sort((a, b) => {
     if (sortColumn.column === "price") {
       const priceA = parseFloat(a.price);
@@ -175,8 +146,6 @@ function ItemTable() {
             items={sortedItems}
             editItemId={editItemId}
             editItemData={editItemData}
-            dispatchItemId={dispatchItemId}
-            dispatchQuantity={dispatchQuantity}
             sortColumn={sortColumn}
             getSortIndicator={getSortIndicator}
             handleDeleteItem={handleDeleteItem}
@@ -185,9 +154,7 @@ function ItemTable() {
             saveEditItem={saveEditItem}
             cancelEditItem={cancelEditItem}
             handleSortColumn={handleSortColumn}
-            handleDispatchItem={handleDispatchItem}
-            handleDispatchQuantityChange={handleDispatchQuantityChange}
-            dispatchItem={dispatchItem}
+            fetchItems={fetchItems}
           />
         </div>
       </div>
