@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -84,10 +83,13 @@ function Navbar({ alertCount, setSessionID }) {
                   }`}
                   to="/stock"
                   onClick={() => handleClick("stock")}
+                  style={{ textDecoration: "none" }} // Remove underline
                 >
                   Stock Alerts
                   {alertCount > 0 && (
-                    <span className="badge badge-dark ml-2">{alertCount}</span>
+                    <span className="badge bg-danger ml-2 text-white">
+                      {alertCount}
+                    </span>
                   )}
                 </Link>
               </div>

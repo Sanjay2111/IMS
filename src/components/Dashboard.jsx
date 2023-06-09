@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/item.css";
 import {
   Chart,
   CategoryScale,
@@ -9,8 +10,9 @@ import {
   BarElement,
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+
 import "chart.js/auto";
-import "../styles/card.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Dashboard() {
   const [items, setItems] = useState([]);
@@ -18,6 +20,21 @@ function Dashboard() {
   const [showDispatchChart, setShowDispatchChart] = useState(false);
   const [showSalesReport, setShowSalesReport] = useState(false);
   const [showSalesPerType, setShowSalesPerType] = useState(false);
+  const [supplierName, setSupplierName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [isSupplierAdded, setIsSupplierAdded] = useState(false);
+
+  const handleSupplierFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Clear the form inputs
+    setSupplierName("");
+    setPhoneNumber("");
+    setAddress("");
+
+    setIsSupplierAdded(true);
+  };
 
   useEffect(() => {
     fetchItems();
@@ -78,32 +95,35 @@ function Dashboard() {
     maintainAspectRatio: false,
   };
 
-  const handleButtonClick = () => {
-    setShowChart((prevShowChart) => !prevShowChart);
-    setShowDispatchChart(false);
-    setShowSalesReport(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleDispatchChartClick = () => {
-    setShowDispatchChart((prevShowDispatchChart) => !prevShowDispatchChart);
-    setShowChart(false);
-    setShowSalesReport(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleSalesReportClick = () => {
-    setShowSalesReport((prevShowSalesReport) => !prevShowSalesReport);
-    setShowChart(false);
-    setShowDispatchChart(false);
-    setShowSalesPerType(false);
-  };
-
-  const handleSalesPerTypeClick = () => {
-    setShowSalesPerType((prevShowSalesPerType) => !prevShowSalesPerType);
-    setShowChart(false);
-    setShowDispatchChart(false);
-    setShowSalesReport(false);
+  const handleCardClick = (cardName) => {
+    switch (cardName) {
+      case "chart":
+        setShowChart((prevShowChart) => !prevShowChart);
+        setShowDispatchChart(false);
+        setShowSalesReport(false);
+        setShowSalesPerType(false);
+        break;
+      case "dispatchChart":
+        setShowDispatchChart((prevShowDispatchChart) => !prevShowDispatchChart);
+        setShowChart(false);
+        setShowSalesReport(false);
+        setShowSalesPerType(false);
+        break;
+      case "salesReport":
+        setShowSalesReport((prevShowSalesReport) => !prevShowSalesReport);
+        setShowChart(false);
+        setShowDispatchChart(false);
+        setShowSalesPerType(false);
+        break;
+      case "salesPerType":
+        setShowSalesPerType((prevShowSalesPerType) => !prevShowSalesPerType);
+        setShowChart(false);
+        setShowDispatchChart(false);
+        setShowSalesReport(false);
+        break;
+      default:
+        break;
+    }
   };
 
   const getDispatchChartData = () => {
@@ -121,54 +141,114 @@ function Dashboard() {
       ],
     };
   };
+  const getSalesReportChartData = () => {
+    const labels = items.map((item) => item.name);
+    const data = items.map((item) => item.saleGenerated);
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Sales Generated",
+          data,
+          backgroundColor: "#36A2EB",
+          hoverBackgroundColor: "#36A2EB",
+        },
+      ],
+    };
+  };
 
   return (
     <>
-      <h3>Sales per Type</h3>
-      <table className="table">
-        <thead></thead>
-        <tfoot>
-          <tr>
-            <th>Total:</th>
-            <td>Bag: {"$" + calculateTotalSalesByType("Bag")}</td>
-            <td>Shoes: {"$" + calculateTotalSalesByType("Shoes")}</td>
-            <td>Clothes: {"$" + calculateTotalSalesByType("Clothes")}</td>
-          </tr>
-        </tfoot>
-      </table>
+      <div className="row m-4">
+        <div className="col-md-6">
+          <div
+            className={`bg-info card rounded-square ${
+              showChart ? "border-danger" : ""
+            }`}
+            onClick={() => handleCardClick("chart")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales Chart per Type</h5>
+              <p className="card-text">
+                {showChart
+                  ? "Click to disable sales chart"
+                  : "Click to generate sales chart per type"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <button onClick={handleButtonClick}>
-        {showChart ? "Disable sales chart" : "Generate sales chart per type"}
-      </button>
+        <div className="col-md-6">
+          <div
+            className={`bg-info card rounded-square ${
+              showDispatchChart ? "border-danger" : ""
+            }`}
+            onClick={() => handleCardClick("dispatchChart")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Dispatch Chart</h5>
+              <p className="card-text">
+                {showDispatchChart
+                  ? "Click to disable dispatch chart"
+                  : "Click to generate dispatch chart"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button onClick={handleDispatchChartClick}>
-        {showDispatchChart ? "Disable dispatch chart" : "Dispatch chart"}
-      </button>
+      <div className="row m-4">
+        <div className="col-md-6">
+          <div
+            className={`bg-success card rounded-square ${
+              showSalesReport ? "border-danger" : ""
+            }`}
+            onClick={() => handleCardClick("salesReport")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales Report</h5>
+              <p className="card-text">
+                {showSalesReport
+                  ? "Click to disable sales report"
+                  : "Click to generate sales report"}
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <button onClick={handleSalesReportClick}>
-        {showSalesReport ? "Disable sales report" : "Generate sales report"}
-      </button>
-
-      <button onClick={handleSalesPerTypeClick}>
-        {showSalesPerType
-          ? "Disable sales per Type"
-          : "Generate sales per Type"}
-      </button>
+        <div className="col-md-6">
+          <div
+            className={`bg-success card rounded-square ${
+              showSalesPerType ? "border-danger" : ""
+            }`}
+            onClick={() => handleCardClick("salesPerType")}
+          >
+            <div className="card-body">
+              <h5 className="card-title">Sales per Type</h5>
+              <p className="card-text">
+                {showSalesPerType
+                  ? "Click to disable sales per type"
+                  : "Click to generate sales per type"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {showChart && (
-        <div style={{ width: "600px", height: "600px" }}>
+        <div style={{ width: "400px", height: "400px" }}>
           <Pie data={getChartData()} options={chartOptions} />
         </div>
       )}
 
       {showDispatchChart && (
-        <div style={{ width: "600px", height: "600px" }}>
+        <div style={{ width: "400px", height: "400px" }}>
           <Bar data={getDispatchChartData()} options={chartOptions} />
         </div>
       )}
 
       {showSalesReport && (
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Name</th>
@@ -181,7 +261,7 @@ function Dashboard() {
               <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.type}</td>
-                <td>{item.saleGenerated}</td>
+                <td>{"$" + item.saleGenerated}</td>
               </tr>
             ))}
           </tbody>
@@ -189,7 +269,7 @@ function Dashboard() {
       )}
 
       {showSalesPerType && (
-        <table className="table">
+        <table className="table table-striped">
           <thead>
             <tr>
               <th>Type</th>
@@ -200,12 +280,77 @@ function Dashboard() {
             {calculateTotalSalesPerType().map((salesType) => (
               <tr key={salesType.type}>
                 <td>{salesType.type}</td>
-                <td>{salesType.totalSales}</td>
+                <td>{"$" + salesType.totalSales}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <h2 className="text-success">Add new Supplier</h2>
+      <div className="row m-4">
+        <div className="col-md-6 font-weight-bold text-dark">
+          {/* Supplier form */}
+          <form onSubmit={handleSupplierFormSubmit}>
+            <div className="form-group">
+              <label htmlFor="supplierName">Supplier Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="supplierName"
+                value={supplierName}
+                onChange={(e) => setSupplierName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phoneNumber">Phone Number</label>
+              <input
+                type="text"
+                className="form-control"
+                id="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="address">Address</label>
+              <input
+                type="text"
+                className="form-control"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Add a Supplier
+            </button>
+          </form>
+          {isSupplierAdded && (
+            <div className="mt-3 alert alert-success">
+              Supplier added successfully!
+            </div>
+          )}
+        </div>
+
+        <div className="col-md-6">
+          <h2 className="text-success">Today's Sales</h2>
+          <div
+            style={{
+              width: "400px",
+              height: "600x",
+              position: "relative",
+              backgroundColor: "white",
+              marginRight: "20px",
+            }}
+          >
+            <Bar data={getSalesReportChartData()} options={chartOptions} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

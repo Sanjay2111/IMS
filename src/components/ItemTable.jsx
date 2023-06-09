@@ -5,16 +5,6 @@ import AddItemForm from "./AddItemForm";
 
 function ItemTable() {
   const [items, setItems] = useState([]);
-  const [editItemId, setEditItemId] = useState(null);
-  const [editItemData, setEditItemData] = useState({
-    id: "",
-    name: "",
-    price: "",
-    type: "",
-    quantity: "",
-  });
-  const [dispatchItemId, setDispatchItemId] = useState(null);
-  const [dispatchQuantity, setDispatchQuantity] = useState("");
   const [sortColumn, setSortColumn] = useState({
     column: null,
     order: "normal",
@@ -33,24 +23,6 @@ function ItemTable() {
     }
   };
 
-  const dispatchItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${dispatchItemId}/dispatch`,
-        { dispatchQuantity }
-      );
-      console.log("Item dispatched:", response.data);
-      setDispatchItemId(null);
-      setDispatchQuantity("");
-      fetchItems(); // Refresh the item list after dispatch
-    } catch (error) {
-      console.log("Dispatch error:", error);
-      console.log("Response data:", error.response.data);
-      console.log("Response status:", error.response.status);
-      console.log("Response headers:", error.response.headers);
-    }
-  };
-
   const handleDeleteItem = async (itemId) => {
     try {
       await axios.delete(`http://localhost:8080/items/${itemId}`);
@@ -58,52 +30,6 @@ function ItemTable() {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleEditItem = (itemId) => {
-    const itemToEdit = items.find((item) => item.id === itemId);
-    setEditItemId(itemId);
-    setEditItemData(itemToEdit);
-  };
-
-  const handleEditItemChange = (e) => {
-    const { name, value } = e.target;
-    setEditItemData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const saveEditItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${editItemId}`,
-        editItemData
-      );
-      console.log("Item updated:", response.data);
-      setEditItemId(null);
-      setEditItemData({
-        id: "",
-        name: "",
-        price: "",
-        type: "",
-        quantity: "",
-      });
-      fetchItems(); // Refresh the item list after update
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const cancelEditItem = () => {
-    setEditItemId(null);
-    setEditItemData({
-      id: "",
-      name: "",
-      price: "",
-      type: "",
-      quantity: "",
-    });
   };
 
   const handleSortColumn = (columnName) => {
@@ -136,15 +62,6 @@ function ItemTable() {
     return null;
   };
 
-  const handleDispatchItem = (itemId) => {
-    setDispatchItemId(itemId);
-    setDispatchQuantity("");
-  };
-
-  const handleDispatchQuantityChange = (e) => {
-    setDispatchQuantity(e.target.value);
-  };
-
   const sortedItems = items.sort((a, b) => {
     if (sortColumn.column === "price") {
       const priceA = parseFloat(a.price);
@@ -168,26 +85,18 @@ function ItemTable() {
 
   return (
     <>
-      <AddItemForm fetchItems={fetchItems} />
-      <div>
-        <ItemList
-          items={sortedItems}
-          editItemId={editItemId}
-          editItemData={editItemData}
-          dispatchItemId={dispatchItemId}
-          dispatchQuantity={dispatchQuantity}
-          sortColumn={sortColumn}
-          getSortIndicator={getSortIndicator}
-          handleDeleteItem={handleDeleteItem}
-          handleEditItem={handleEditItem}
-          handleEditItemChange={handleEditItemChange}
-          saveEditItem={saveEditItem}
-          cancelEditItem={cancelEditItem}
-          handleSortColumn={handleSortColumn}
-          handleDispatchItem={handleDispatchItem}
-          handleDispatchQuantityChange={handleDispatchQuantityChange}
-          dispatchItem={dispatchItem}
-        />
+      <div className="">
+        <AddItemForm fetchItems={fetchItems} />
+        <div>
+          <ItemList
+            items={sortedItems}
+            sortColumn={sortColumn}
+            getSortIndicator={getSortIndicator}
+            handleDeleteItem={handleDeleteItem}
+            handleSortColumn={handleSortColumn}
+            fetchItems={fetchItems}
+          />
+        </div>
       </div>
     </>
   );

@@ -1,16 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/animate.css";
 import "../styles/item.css";
-
+import Dashboard from "./Dashboard";
 
 const LoginPage = ({ setSessionID }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatusMessage, setLoginStatusMessage] = useState("");
   const [loginStatus, setLoginStatus] = useState(false);
-  const [passwordAnimation] = "";
+  const [passwordAnimation, setPasswordAnimation] = useState("");
 
   const navigate = useNavigate();
 
@@ -20,6 +20,9 @@ const LoginPage = ({ setSessionID }) => {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+    // Clear the error message and animation when the password is changed
+    setLoginStatusMessage("");
+    setPasswordAnimation("");
   };
 
   const handleSubmit = async (event) => {
@@ -36,18 +39,17 @@ const LoginPage = ({ setSessionID }) => {
 
         console.log("Login successful. Session ID:", sessionID);
 
-        setLoginStatus(true);
         setLoginStatusMessage("");
+        setLoginStatus(true);
         setSessionID(sessionID);
-        navigate("/dashboard");
-      } else {
-        setLoginStatus(false);
-        setLoginStatusMessage("Incorrect username or password");
+
+        navigate("/dashboard", { state: { username: username } }); // Pass the username as a state object
       }
     } catch (error) {
       console.error("Error:", error);
+      setLoginStatusMessage("Incorrect username or password");
       setLoginStatus(false);
-      setLoginStatusMessage("An error occurred");
+      setPasswordAnimation("animate__animated animate__shakeX");
     }
   };
 
@@ -90,12 +92,14 @@ const LoginPage = ({ setSessionID }) => {
                   type="password"
                   id="form2Example2"
                   className={`form-control ${
-                    loginStatus === false ? "is-invalid" : ""
+                    loginStatus === false && loginStatusMessage
+                      ? "is-invalid"
+                      : ""
                   } ${passwordAnimation}`}
                   value={password}
                   onChange={handlePasswordChange}
                 />
-                {loginStatus === false && (
+                {loginStatus === false && loginStatusMessage && (
                   <div className="invalid-feedback">{loginStatusMessage}</div>
                 )}
                 <label className="form-label" htmlFor="form2Example2">

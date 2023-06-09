@@ -72,14 +72,14 @@ function Stock({ setShouldUpdateItems, setAlertCount }) {
       <div className="image" style={{ paddingTop: "60px" }}>
         <h2>Stock</h2>
         {filteredItems.map((item) => (
-          <div key={item.id}>
-            <p
-              className="alert"
-              style={{ backgroundColor: "red", color: "white" }}
+          <div key={item.id} className="alert alert-danger mb-3">
+            Only {item.quantity} of {item.name} are left. Order More Soon !!
+            <button
+              className="btn btn-primary ms-3"
+              onClick={() => openModal(item)}
             >
-              Only {item.quantity} of {item.name} are left. Order More Soon !!
-              <button onClick={() => openModal(item)}>Order Now</button>
-            </p>
+              Order Now
+            </button>
           </div>
         ))}
       </div>
