@@ -25,7 +25,10 @@ function ItemList(props) {
     <>
       <div className="">
         <div>
-          <h3>Inventory Table</h3>
+          <h3 className="bg-yellow text-blue" style={{ textAlign: "center" }}>
+            Inventory Table
+          </h3>
+
           <table className="table table-striped item-table">
             <thead>
               <tr>
@@ -48,7 +51,12 @@ function ItemList(props) {
                 >
                   Quantity {getSortIndicator("quantity")}
                 </th>
-                <th className="bg-dark text-light">Action</th>
+                <th
+                  className="bg-dark text-light"
+                  style={{ paddingLeft: "100px" }}
+                >
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -72,6 +80,7 @@ function ItemList(props) {
                         type="button"
                         className="btn btn-primary"
                         onClick={() => handleEditItem(item.id)}
+                        style={{ marginLeft: "20px" }}
                       >
                         Edit
                       </button>
@@ -80,6 +89,7 @@ function ItemList(props) {
                       type="button"
                       className="btn btn-success"
                       onClick={() => handleDispatchItem(item.id)}
+                      style={{ marginLeft: "20px" }}
                     >
                       Dispatch
                     </button>
@@ -105,7 +115,10 @@ function ItemList(props) {
               onDispatch={dispatchItem}
             />
           )}
-          <h3>Dispatch Table</h3>
+          <h3 className="bg-yellow text-blue" style={{ textAlign: "center" }}>
+            Dispatch Tabel
+          </h3>
+
           <table className="table additional-table">
             <thead>
               <tr className="bg-dark">

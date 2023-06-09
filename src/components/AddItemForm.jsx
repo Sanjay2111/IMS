@@ -3,8 +3,11 @@ import axios from "axios";
 
 function AddItemForm({ fetchItems }) {
   const [newItem, setNewItem] = useState({
+    id: "",
     name: "",
-    salesPriceGenerated: "",
+    price: "",
+    type: "",
+    quantity: "",
   });
 
   const [errors, setErrors] = useState({});
