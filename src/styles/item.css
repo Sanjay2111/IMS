@@ -183,3 +183,13 @@ body {
 .alert button:hover {
   background-color: #5ba530;
 }
+
+.rounded-square {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card {
+  margin: 10px;
+  padding: 10px;
+}

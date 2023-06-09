@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/item.css";
 import {
   Chart,
   CategoryScale,
@@ -9,6 +10,7 @@ import {
   BarElement,
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+
 import "chart.js/auto";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,6 +20,21 @@ function Dashboard() {
   const [showDispatchChart, setShowDispatchChart] = useState(false);
   const [showSalesReport, setShowSalesReport] = useState(false);
   const [showSalesPerType, setShowSalesPerType] = useState(false);
+  const [supplierName, setSupplierName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [isSupplierAdded, setIsSupplierAdded] = useState(false);
+
+  const handleSupplierFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Clear the form inputs
+    setSupplierName("");
+    setPhoneNumber("");
+    setAddress("");
+
+    setIsSupplierAdded(true);
+  };
 
   useEffect(() => {
     fetchItems();
@@ -124,26 +141,30 @@ function Dashboard() {
       ],
     };
   };
+  const getSalesReportChartData = () => {
+    const labels = items.map((item) => item.name);
+    const data = items.map((item) => item.saleGenerated);
+    return {
+      labels,
+      datasets: [
+        {
+          label: "Sales Generated",
+          data,
+          backgroundColor: "#36A2EB",
+          hoverBackgroundColor: "#36A2EB",
+        },
+      ],
+    };
+  };
 
   return (
     <>
-      <h3>Sales per Type</h3>
-      <table className="table table-striped">
-        <thead></thead>
-        <tfoot>
-          <tr>
-            <th>Total:</th>
-            <td>Bag: {"$" + calculateTotalSalesByType("Bag")}</td>
-            <td>Shoes: {"$" + calculateTotalSalesByType("Shoes")}</td>
-            <td>Clothes: {"$" + calculateTotalSalesByType("Clothes")}</td>
-          </tr>
-        </tfoot>
-      </table>
-
-      <div className="row">
-        <div className="col-md-3">
+      <div className="row m-4">
+        <div className="col-md-6">
           <div
-            className={`card ${showChart ? "border-danger" : ""}`}
+            className={`bg-info card rounded-square ${
+              showChart ? "border-danger" : ""
+            }`}
             onClick={() => handleCardClick("chart")}
           >
             <div className="card-body">
@@ -157,9 +178,11 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-6">
           <div
-            className={`card ${showDispatchChart ? "border-danger" : ""}`}
+            className={`bg-info card rounded-square ${
+              showDispatchChart ? "border-danger" : ""
+            }`}
             onClick={() => handleCardClick("dispatchChart")}
           >
             <div className="card-body">
@@ -172,10 +195,14 @@ function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="col-md-3">
+      <div className="row m-4">
+        <div className="col-md-6">
           <div
-            className={`card ${showSalesReport ? "border-danger" : ""}`}
+            className={`bg-success card rounded-square ${
+              showSalesReport ? "border-danger" : ""
+            }`}
             onClick={() => handleCardClick("salesReport")}
           >
             <div className="card-body">
@@ -189,9 +216,11 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-6">
           <div
-            className={`card ${showSalesPerType ? "border-danger" : ""}`}
+            className={`bg-success card rounded-square ${
+              showSalesPerType ? "border-danger" : ""
+            }`}
             onClick={() => handleCardClick("salesPerType")}
           >
             <div className="card-body">
@@ -207,13 +236,13 @@ function Dashboard() {
       </div>
 
       {showChart && (
-        <div style={{ width: "600px", height: "600px" }}>
+        <div style={{ width: "400px", height: "400px" }}>
           <Pie data={getChartData()} options={chartOptions} />
         </div>
       )}
 
       {showDispatchChart && (
-        <div style={{ width: "600px", height: "600px" }}>
+        <div style={{ width: "400px", height: "400px" }}>
           <Bar data={getDispatchChartData()} options={chartOptions} />
         </div>
       )}
@@ -232,7 +261,7 @@ function Dashboard() {
               <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.type}</td>
-                <td>{item.saleGenerated}</td>
+                <td>{"$" + item.saleGenerated}</td>
               </tr>
             ))}
           </tbody>
@@ -251,12 +280,77 @@ function Dashboard() {
             {calculateTotalSalesPerType().map((salesType) => (
               <tr key={salesType.type}>
                 <td>{salesType.type}</td>
-                <td>{salesType.totalSales}</td>
+                <td>{"$" + salesType.totalSales}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <h2 className="text-success">Add new Supplier</h2>
+      <div className="row m-4">
+        <div className="col-md-6 font-weight-bold text-dark">
+          {/* Supplier form */}
+          <form onSubmit={handleSupplierFormSubmit}>
+            <div className="form-group">
+              <label htmlFor="supplierName">Supplier Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="supplierName"
+                value={supplierName}
+                onChange={(e) => setSupplierName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phoneNumber">Phone Number</label>
+              <input
+                type="text"
+                className="form-control"
+                id="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="address">Address</label>
+              <input
+                type="text"
+                className="form-control"
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Add a Supplier
+            </button>
+          </form>
+          {isSupplierAdded && (
+            <div className="mt-3 alert alert-success">
+              Supplier added successfully!
+            </div>
+          )}
+        </div>
+
+        <div className="col-md-6">
+          <h2 className="text-success">Today's Sales</h2>
+          <div
+            style={{
+              width: "400px",
+              height: "600x",
+              position: "relative",
+              backgroundColor: "white",
+              marginRight: "20px",
+            }}
+          >
+            <Bar data={getSalesReportChartData()} options={chartOptions} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

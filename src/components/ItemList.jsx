@@ -153,7 +153,7 @@ function ItemList(props) {
                   <td>
                     <button
                       type="button"
-                      className="btn btn-danger"
+                      className="btn btn-danger mr-4"
                       onClick={() => handleDeleteItem(item.id)}
                     >
                       Delete
@@ -161,7 +161,7 @@ function ItemList(props) {
                     {editItemId !== item.id && (
                       <button
                         type="button"
-                        className="btn btn-primary"
+                        className="btn btn-primary mr-4"
                         onClick={() => handleEditItem(item.id)}
                       >
                         Edit

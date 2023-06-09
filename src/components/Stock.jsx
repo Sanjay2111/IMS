@@ -17,12 +17,6 @@ function Stock({ setShouldUpdateItems, setAlertCount }) {
     setAlertCount(items.filter((item) => item.quantity < 1000).length);
   }, [items, setAlertCount]);
 
-  useEffect(() => {
-    if (selectedItem) {
-      setSelectedItem(items.find((item) => item.id === selectedItem.id));
-    }
-  }, [items, selectedItem]);
-
   const fetchItems = async () => {
     try {
       const response = await axios.get("http://localhost:8080/items");
@@ -76,16 +70,16 @@ function Stock({ setShouldUpdateItems, setAlertCount }) {
   return (
     <>
       <div className="image" style={{ paddingTop: "60px" }}>
-        <h2>Low Stock Alerts</h2>
+        <h2>Stock</h2>
         {filteredItems.map((item) => (
-          <div key={item.id}>
-            <p
-              className="alert"
-              style={{ backgroundColor: "red", color: "white" }}
+          <div key={item.id} className="alert alert-danger mb-3">
+            Only {item.quantity} of {item.name} are left. Order More Soon !!
+            <button
+              className="btn btn-primary ms-3"
+              onClick={() => openModal(item)}
             >
-              Only {item.quantity} of {item.name} are left. Order More Soon !!
-              <button onClick={() => openModal(item)}>Order Now</button>
-            </p>
+              Order Now
+            </button>
           </div>
         ))}
       </div>

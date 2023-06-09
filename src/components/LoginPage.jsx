@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/animate.css";
 import "../styles/item.css";
+import Dashboard from "./Dashboard";
 
 const LoginPage = ({ setSessionID }) => {
   const [username, setUsername] = useState("");
@@ -41,7 +42,8 @@ const LoginPage = ({ setSessionID }) => {
         setLoginStatusMessage("");
         setLoginStatus(true);
         setSessionID(sessionID);
-        navigate("/dashboard");
+
+        navigate("/dashboard", { state: { username: username } }); // Pass the username as a state object
       }
     } catch (error) {
       console.error("Error:", error);

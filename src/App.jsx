@@ -78,6 +78,7 @@ const App = () => {
           path="/inventory"
           element={
             <ItemTable />
+            
           }
         />
         <Route
