@@ -78,9 +78,6 @@ const App = () => {
           path="/inventory"
           element={
             <ItemTable />
-            //   onItemAdded={handleItemAdded}
-            //   setShouldUpdateItems={handleShouldUpdateItems}
-            // />
           }
         />
         <Route

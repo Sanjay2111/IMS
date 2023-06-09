@@ -1,8 +1,7 @@
-// Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-function Navbar({ alertCount, setSessionID }) {
+function Navbar({ alertCount, setSessionID, setAlertCount }) {
   const [activeLink, setActiveLink] = useState("");
   const navigate = useNavigate();
   const location = useLocation();

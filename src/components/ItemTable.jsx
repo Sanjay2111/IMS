@@ -5,14 +5,6 @@ import AddItemForm from "./AddItemForm";
 
 function ItemTable() {
   const [items, setItems] = useState([]);
-  const [editItemId, setEditItemId] = useState(null);
-  const [editItemData, setEditItemData] = useState({
-    id: "",
-    name: "",
-    price: "",
-    type: "",
-    quantity: "",
-  });
   const [sortColumn, setSortColumn] = useState({
     column: null,
     order: "normal",
@@ -38,52 +30,6 @@ function ItemTable() {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleEditItem = (itemId) => {
-    const itemToEdit = items.find((item) => item.id === itemId);
-    setEditItemId(itemId);
-    setEditItemData(itemToEdit);
-  };
-
-  const handleEditItemChange = (e) => {
-    const { name, value } = e.target;
-    setEditItemData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const saveEditItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${editItemId}`,
-        editItemData
-      );
-      console.log("Item updated:", response.data);
-      setEditItemId(null);
-      setEditItemData({
-        id: "",
-        name: "",
-        price: "",
-        type: "",
-        quantity: "",
-      });
-      fetchItems(); // Refresh the item list after update
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const cancelEditItem = () => {
-    setEditItemId(null);
-    setEditItemData({
-      id: "",
-      name: "",
-      price: "",
-      type: "",
-      quantity: "",
-    });
   };
 
   const handleSortColumn = (columnName) => {
@@ -144,15 +90,9 @@ function ItemTable() {
         <div>
           <ItemList
             items={sortedItems}
-            editItemId={editItemId}
-            editItemData={editItemData}
             sortColumn={sortColumn}
             getSortIndicator={getSortIndicator}
             handleDeleteItem={handleDeleteItem}
-            handleEditItem={handleEditItem}
-            handleEditItemChange={handleEditItemChange}
-            saveEditItem={saveEditItem}
-            cancelEditItem={cancelEditItem}
             handleSortColumn={handleSortColumn}
             fetchItems={fetchItems}
           />

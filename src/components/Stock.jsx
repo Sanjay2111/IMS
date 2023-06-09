@@ -17,6 +17,12 @@ function Stock({ setShouldUpdateItems, setAlertCount }) {
     setAlertCount(items.filter((item) => item.quantity < 1000).length);
   }, [items, setAlertCount]);
 
+  useEffect(() => {
+    if (selectedItem) {
+      setSelectedItem(items.find((item) => item.id === selectedItem.id));
+    }
+  }, [items, selectedItem]);
+
   const fetchItems = async () => {
     try {
       const response = await axios.get("http://localhost:8080/items");
@@ -70,7 +76,7 @@ function Stock({ setShouldUpdateItems, setAlertCount }) {
   return (
     <>
       <div className="image" style={{ paddingTop: "60px" }}>
-        <h2>Stock</h2>
+        <h2>Low Stock Alerts</h2>
         {filteredItems.map((item) => (
           <div key={item.id}>
             <p
