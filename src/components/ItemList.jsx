@@ -1,116 +1,25 @@
-import { useState } from "react";
-import axios from "axios";
 import EditItemForm from "./EditItemForm";
 import DispatchForm from "./DispatchForm";
 
 function ItemList(props) {
   const {
     items,
+    editItemId,
+    editItemData,
+    dispatchItemId,
+    dispatchQuantity,
     sortColumn,
     getSortIndicator,
     handleDeleteItem,
+    handleEditItem,
+    handleEditItemChange,
+    saveEditItem,
+    cancelEditItem,
     handleSortColumn,
-    fetchItems,
+    handleDispatchItem,
+    handleDispatchQuantityChange,
+    dispatchItem,
   } = props;
-
-  const [editItemId, setEditItemId] = useState(null);
-  const [editItemData, setEditItemData] = useState({
-    id: "",
-    name: "",
-    price: "",
-    type: "",
-    quantity: "",
-  });
-  const [dispatchItemId, setDispatchItemId] = useState(null);
-  const [dispatchQuantity, setDispatchQuantity] = useState("");
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDispatchModal, setShowDispatchModal] = useState(false);
-
-  const handleEditItem = (itemId) => {
-    const itemToEdit = items.find((item) => item.id === itemId);
-    setEditItemId(itemId);
-    setEditItemData(itemToEdit);
-    setShowEditModal(true);
-  };
-
-  const handleEditItemChange = (e) => {
-    const { name, value } = e.target;
-    setEditItemData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const saveEditItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${editItemId}`,
-        editItemData
-      );
-      console.log("Item updated:", response.data);
-      setEditItemId(null);
-      setEditItemData({
-        id: "",
-        name: "",
-        price: "",
-        type: "",
-        quantity: "",
-      });
-      fetchItems(); // Refresh the item list after update
-      setShowEditModal(false); // Hide the edit modal
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const cancelEditItem = () => {
-    setEditItemId(null);
-    setEditItemData({
-      id: "",
-      name: "",
-      price: "",
-      type: "",
-      quantity: "",
-    });
-    setShowEditModal(false); // Hide the edit modal
-  };
-
-  const dispatchItem = async () => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/items/${dispatchItemId}/dispatch`,
-        { dispatchQuantity }
-      );
-      console.log("Item dispatched:", response.data);
-      setDispatchItemId(null);
-      setDispatchQuantity("");
-      fetchItems(); // Refresh the item list after dispatch
-      handleCloseDispatchModal();
-    } catch (error) {
-      console.log("Dispatch error:", error);
-      console.log("Response data:", error.response.data);
-      console.log("Response status:", error.response.status);
-      console.log("Response headers:", error.response.headers);
-    }
-  };
-
-  const handleDispatchItem = (itemId) => {
-    setDispatchItemId(itemId);
-    setDispatchQuantity("");
-    setShowDispatchModal(true);
-  };
-
-  const handleDispatchQuantityChange = (e) => {
-    setDispatchQuantity(e.target.value);
-  };
-
-  const handleCloseDispatchModal = () => {
-    setShowDispatchModal(false);
-  };
-
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
-  };
 
   return (
     <>
@@ -161,7 +70,7 @@ function ItemList(props) {
                   <td>
                     <button
                       type="button"
-                      className="btn btn-danger mr-4"
+                      className="btn btn-danger"
                       onClick={() => handleDeleteItem(item.id)}
                     >
                       Delete
@@ -169,7 +78,7 @@ function ItemList(props) {
                     {editItemId !== item.id && (
                       <button
                         type="button"
-                        className="btn btn-primary mr-4"
+                        className="btn btn-primary"
                         onClick={() => handleEditItem(item.id)}
                         style={{ marginLeft: "20px" }}
                       >
@@ -189,50 +98,51 @@ function ItemList(props) {
               ))}
             </tbody>
           </table>
+
+          {editItemId && (
+            <EditItemForm
+              editItemData={editItemData}
+              handleEditItemChange={handleEditItemChange}
+              saveEditItem={saveEditItem}
+              cancelEditItem={cancelEditItem}
+            />
+          )}
+
+          {dispatchItemId && (
+            <DispatchForm
+              quantity={dispatchQuantity}
+              onQuantityChange={handleDispatchQuantityChange}
+              onDispatch={dispatchItem}
+            />
+          )}
+          <h3 className="bg-yellow text-blue" style={{ textAlign: "center" }}>
+            Dispatch Tabel
+          </h3>
+
+          <table className="table additional-table">
+            <thead>
+              <tr className="bg-dark">
+                <th className="bg-dark text-light">ID</th>
+                <th className="bg-dark text-light">Name</th>
+                <th className="bg-dark text-light">Order Number</th>
+                <th className="bg-dark text-light">Dispatch Quantity</th>
+                <th className="bg-dark text-light">Sale Generated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.orderNumber}</td>
+                  <td>{item.dispatchQuantity}</td>
+                  <td>{item.saleGenerated}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-      {showEditModal && (
-        <EditItemForm
-          editItemData={editItemData}
-          handleEditItemChange={handleEditItemChange}
-          saveEditItem={saveEditItem}
-          cancelEditItem={cancelEditItem}
-          handleCloseEditModal={handleCloseEditModal}
-        />
-      )}
-
-      {showDispatchModal && (
-        <DispatchForm
-          dispatchQuantity={dispatchQuantity}
-          handleDispatchQuantityChange={handleDispatchQuantityChange}
-          dispatchItem={dispatchItem}
-          handleCloseDispatchModal={handleCloseDispatchModal}
-        />
-      )}
-
-      <h3>Dispatch Table</h3>
-      <table className="table additional-table">
-        <thead>
-          <tr className="bg-dark">
-            <th className="bg-dark text-light">ID</th>
-            <th className="bg-dark text-light">Name</th>
-            <th className="bg-dark text-light">Order Number</th>
-            <th className="bg-dark text-light">Dispatch Quantity</th>
-            <th className="bg-dark text-light">Sale Generated</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.name}</td>
-              <td>{item.orderNumber}</td>
-              <td>{item.dispatchQuantity}</td>
-              <td>{item.saleGenerated}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </>
   );
 }
